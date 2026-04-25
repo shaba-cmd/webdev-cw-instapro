@@ -112,7 +112,6 @@ const renderApp = () => {
       onAddPostClick({ description, imageUrl }) {
         addPosts({ token: getToken(), description, imageUrl })
           .then((data) => {
-            console.log(data);
             goToPage(POSTS_PAGE);
             renderApp();
           })
