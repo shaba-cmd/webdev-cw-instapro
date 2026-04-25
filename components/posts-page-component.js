@@ -4,9 +4,6 @@ import { posts, goToPage } from "../index.js";
 
 export function renderPostsPageComponent({ appEl }) {
   const appHtml = posts.map((el) => {
-    const dateString = el.createdAt
-    const date = new Date(dateString).toLocaleDateString()
-
     return `<div class="page-container">
               <div class="header-container"></div>
               <ul class="posts">
@@ -31,7 +28,7 @@ export function renderPostsPageComponent({ appEl }) {
                     ${el.description}
                   </p>
                   <p class="post-date">
-                    ${date}
+                    ${new Date(el.createdAt).toLocaleDateString()}
                   </p>
                 </li>
               </ul>

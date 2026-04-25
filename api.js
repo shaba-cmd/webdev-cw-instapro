@@ -23,6 +23,24 @@ export function getPosts({ token }) {
     });
 }
 
+export function addPosts({ token, description, imageUrl }) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(description, imageUrl),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Ошибка сервера: " + response.status);
+      }
+
+      return response.json();
+    })
+}
+
 export function registerUser({ login, password, name, imageUrl }) {
   return fetch(baseHost + "/api/user", {
     method: "POST",
