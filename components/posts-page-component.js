@@ -1,6 +1,6 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, getToken, goToPage } from "../index.js";
+import { posts, getToken, goToPage, page } from "../index.js";
 import { getPosts, getUserPosts, likePost } from "../api.js";
 
 export function renderPostsPageComponent({ appEl, posts }) {
@@ -54,21 +54,26 @@ export function renderPostsPageComponent({ appEl, posts }) {
 
   for (let likeBtn of document.querySelectorAll(".like-button")) {
     likeBtn.addEventListener("click", () => {        
-        const isLiked = likeBtn.classList.contains('like');
-        const newState = isLiked ? 'dislike' : 'like';
-        
-        likePost({ token: getToken(), postId: likeBtn.dataset.postId, likeState: newState })
-          .then(() => {
-            likeBtn.classList.toggle('like');
+      const isLiked = likeBtn.classList.contains('like');
+      const newState = isLiked ? 'dislike' : 'like';
+      const userId = likeBtn.closest('.post').firstElementChild.dataset.userId;
+      
+      likePost({ token: getToken(), postId: likeBtn.dataset.postId, likeState: newState })
+        .then(() => {
+          likeBtn.classList.toggle('like');
+          if (page === POSTS_PAGE) {
             return getPosts({ token: getToken() });
-          })
-          .then((newPosts) => {
-            posts = newPosts;
-            renderPostsPageComponent({ appEl, posts });
-          })
-          .catch(error => {
-            alert(error);
-          });
+          } else if (page === USER_POSTS_PAGE) {
+            return getUserPosts({ token: getToken(), userId: userId });
+          }
+        })
+        .then((newPosts) => {
+          posts = newPosts;
+          renderPostsPageComponent({ appEl, posts });
+        })
+        .catch(error => {
+          alert(error);
+        });
     });
   }
   
