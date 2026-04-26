@@ -67,7 +67,10 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      getUserPosts({token: getToken(), userId: data.userId})
+      page = LOADING_PAGE;
+      renderApp();
+      
+      return getUserPosts({token: getToken(), userId: data.userId})
         .then(data => {
           page = USER_POSTS_PAGE;
           posts = data;
@@ -76,7 +79,7 @@ export const goToPage = (newPage, data) => {
         .catch(error => {
           alert(error)
         })
-
+        
     }
 
     page = newPage;
@@ -133,7 +136,6 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    console.log(posts);
     return renderPostsPageComponent({ appEl, posts})
   }
 };
