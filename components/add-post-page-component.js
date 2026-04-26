@@ -39,7 +39,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     })
 
     document.getElementById("add-button").addEventListener("click", () => {
-      const description = document.querySelector('.add-post-input__text').value
+      const description = replaceMethod(document.querySelector('.add-post-input__text'))
 
       onAddPostClick({
         description: description,

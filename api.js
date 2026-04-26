@@ -34,7 +34,7 @@ export function addPosts({ token, description, imageUrl }) {
   })
     .then(response => {
       if (!response.ok) {
-        throw new Error("Ошибка сервера: " + response.status);
+        throw new Error("Картинка или текст должны быть заполнены");
       }
 
       return response.json();
@@ -72,7 +72,6 @@ export function likePost({ token, postId, likeState }) {
         throw new Error("Нет авторизации");
       }
 
-      console.log(likeState);
       return response.json();
     })
 }

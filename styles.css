@@ -33,8 +33,19 @@
   cursor: pointer;
 }
 
-.logout-button {
+.header-box_logout-btn {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 8px;
   width: 130px;
+}
+
+.header-box_logout-btn p {
+  cursor: pointer;
+}
+
+.logout-button {
   text-align: right;
 }
 
@@ -45,6 +56,11 @@
   padding: 0;
   margin: 0;
 }
+
+.not-posts {
+  text-align: center;
+}
+
 
 .post-header {
   display: flex;

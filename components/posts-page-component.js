@@ -3,8 +3,23 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, getToken, goToPage, page } from "../index.js";
 import { getPosts, getUserPosts, likePost } from "../api.js";
 
+
 export function renderPostsPageComponent({ appEl, posts }) {
-  const appHtmlPosts = posts.map((el) => {
+  const appPosts = posts.map((el) => {
+    let likes = ''
+    
+    if (el.likes.length === 1) {
+      likes = `${el.likes[0].name}`
+    } else if (el.likes.length >= 2) {
+      likes = `${el.likes[0].name} и еще ${el.likes.length - 1}`
+    } else {
+      likes = `${el.likes.length}`
+    }
+
+    if (el === 0) {
+      return `<h2>У пользователя пока еще нет постов</h2>`
+    }
+
     return `<li class="post">
               <div class="post-header" data-user-id="${el.user.id}">
                   <img src="${el.user.imageUrl}" class="post-header__user-image">
@@ -18,7 +33,7 @@ export function renderPostsPageComponent({ appEl, posts }) {
                   <img src="./assets/images/${el.isLiked ? 'like-active' : 'like-not-active'}.svg">
                 </button>
                 <p class="post-likes-text">
-                  Нравится: <strong>${el.likes.length}</strong>
+                  Нравится: <strong>${likes}</strong>
                 </p>
               </div>
               <p class="post-text">
@@ -26,15 +41,17 @@ export function renderPostsPageComponent({ appEl, posts }) {
                 ${el.description}
               </p>
               <p class="post-date">
-                ${new Date(el.createdAt).toLocaleDateString()}
+                2
               </p>
             </li>`;
   }).join('');
 
+  const appEmptyPosts = `<h2 class="not-posts">У пользователя пока еще нет постов</h2>`
+
   const appHtml = `<div class="page-container">
                     <div class="header-container"></div>
                     <ul class="posts">
-                      ${appHtmlPosts}
+                      ${posts.length >= 1 ? appPosts : appEmptyPosts}          
                     </ul>
                   </div>`;
 
