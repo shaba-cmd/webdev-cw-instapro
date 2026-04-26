@@ -2,7 +2,7 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
-export function renderPostsPageComponent({ appEl }) {
+export function renderPostsPageComponent({ appEl, posts }) {
   const appHtml = posts.map((el) => {
     return `<div class="page-container">
               <div class="header-container"></div>
