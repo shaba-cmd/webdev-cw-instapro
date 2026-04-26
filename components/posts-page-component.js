@@ -1,6 +1,7 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, getToken, goToPage } from "../index.js";
+import { getPosts, getUserPosts, likePost } from "../api.js";
 
 export function renderPostsPageComponent({ appEl, posts }) {
   const appHtmlPosts = posts.map((el) => {
@@ -13,8 +14,8 @@ export function renderPostsPageComponent({ appEl, posts }) {
                 <img class="post-image" src="${el.imageUrl}">
               </div>
               <div class="post-likes">
-                <button data-post-id="${el.id}" class="like-button">
-                  <img src="${el.isLiked ? './assets/images/like-active.svg' : './assets/images/like-not-active.svg'}">
+                <button data-post-id="${el.id}" class="like-button ${el.isLiked ? 'like' : ''}">
+                  <img src="./assets/images/${el.isLiked ? 'like-active' : 'like-not-active'}.svg">
                 </button>
                 <p class="post-likes-text">
                   Нравится: <strong>${el.likes.length}</strong>
@@ -43,17 +44,32 @@ export function renderPostsPageComponent({ appEl, posts }) {
     element: document.querySelector(".header-container"),
   });
 
-  for (let userEl of document.querySelectorAll(".like-button")) {
+  for (let userEl of document.querySelectorAll(".post-header")) {
     userEl.addEventListener("click", () => {
       goToPage(USER_POSTS_PAGE, {
         userId: userEl.dataset.userId,
       });
-    });
+    }); 
   }
 
-  for (let userLikePost of document.querySelectorAll(".post-header")) {
-    userLikePost.addEventListener("click", () => {
-      
+  for (let likeBtn of document.querySelectorAll(".like-button")) {
+    likeBtn.addEventListener("click", () => {        
+        const isLiked = likeBtn.classList.contains('like');
+        const newState = isLiked ? 'dislike' : 'like';
+        
+        likePost({ token: getToken(), postId: likeBtn.dataset.postId, likeState: newState })
+          .then(() => {
+            likeBtn.classList.toggle('like');
+            return getPosts({ token: getToken() });
+          })
+          .then((newPosts) => {
+            posts = newPosts;
+            renderPostsPageComponent({ appEl, posts });
+          })
+          .catch(error => {
+            alert(error);
+          });
     });
   }
+  
 }

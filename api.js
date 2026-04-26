@@ -60,6 +60,23 @@ export function getUserPosts({ token, userId }) {
     });
 }
 
+export function likePost({ token, postId, likeState }) {
+  return fetch(postsHost + `/${postId}/${likeState}`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then(response => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      console.log(likeState);
+      return response.json();
+    })
+}
+
 export function registerUser({ login, password, name, imageUrl }) {
   return fetch(baseHost + "/api/user", {
     method: "POST",
