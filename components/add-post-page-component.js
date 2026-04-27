@@ -1,3 +1,4 @@
+import { replaceMethod } from "../security.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
