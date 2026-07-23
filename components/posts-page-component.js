@@ -41,7 +41,6 @@ export function renderPostsPageComponent({ appEl, posts }) {
                 ${el.description}
               </p>
               <p class="post-date">
-                2
               </p>
             </li>`;
   }).join('');
